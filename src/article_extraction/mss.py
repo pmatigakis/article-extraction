@@ -1,7 +1,7 @@
 import re
 from lxml import html
 from lxml.html.clean import clean_html
-from httplib2 import Http
+from urllib import urlopen
 
 from article_extraction.html import format_html_tokens, create_text
 
@@ -84,9 +84,9 @@ class MSSArticleExtractor(object):
 
     def extract_article_from_url(self, url):
         """Extract the article from the page at the url."""
-        http = Http()
-
-        responce, content = http.request(url)
+        filehandle = urlopen(url)
+        
+        content = filehandle.read()
 
         content = content.decode("utf-8")
 
