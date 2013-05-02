@@ -44,22 +44,30 @@ def tokenize_html(html_document):
 
     return tokens
 
-def extract_maximum_subsequence(tokens, scores):
-    """Return the term sequence with the highest score."""
+def find_maximum_subsequence(scores):
+    """Find the subsequence with the highest score."""
     start = 0
+    pos = 0
     sm = 0
     maxSS = [-100000000]
-    terms = []
 
-    for i in range(len(tokens)):
+    for i in range(len(scores)):
         sm += scores[i]
 
         if sm > sum(maxSS):
             maxSS = [scores[o] for o in range(start, i+1)]
-            terms = [tokens[o] for o in range(start, i+1)]
+            pos = start
         if sm < 0:
             start = i + 1
             sm = 0
+
+    return pos, len(maxSS)
+
+def extract_maximum_subsequence(tokens, scores):
+    """Return the term sequence with the highest score."""
+    start, length = find_maximum_subsequence(scores)
+
+    terms = tokens[start:start+length]
 
     return terms
 
