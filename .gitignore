@@ -1,3 +1,8 @@
 *.py~
 *.pyc
 *.html
+article_extraction.egg-info
+build
+dist
+.project
+.pydevproject
