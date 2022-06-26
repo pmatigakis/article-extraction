@@ -1,14 +1,16 @@
 import re
 from lxml import html
 from lxml.html.clean import clean_html
-from urllib import urlopen
+from urllib.request import urlopen
 
 from article_extraction.html import format_html_tokens, create_text
 
 def tokenize_html(html_document):
     """Create a list that contains the tags and terms of the document."""
 
-    def tokenize_html_recurcive(element, tokens=[]):
+    def tokenize_html_recurcive(element, tokens=None):
+        tokens = tokens or []
+
         for child in element.getchildren():
             if child.tag:
                 tokens.append("<" + child.tag + ">")

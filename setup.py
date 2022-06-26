@@ -9,6 +9,7 @@ setup(
       zip_safe=True,
       python_requires=">=3.8",
       install_requires=["lxml>=4.7.1"],
+      test_suite="tests",
       author="Panagiotis Matigakis",
       author_email="pmatigakis@gmail.com",
       description="Article text extraction library",
