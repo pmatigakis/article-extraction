@@ -1,6 +1,6 @@
 import re
 from lxml import html
-from lxml.html.clean import clean_html
+from lxml.html.clean import Cleaner
 from urllib.request import urlopen
 
 from article_extraction.html import format_html_tokens, create_text
@@ -104,7 +104,8 @@ class MSSArticleExtractor(object):
 
     def extract_article(self, document):
         """Extract the article from the page contents."""
-        html_document = clean_html(html.document_fromstring(document))
+        cleaner = Cleaner(style=True)
+        html_document = cleaner.clean_html(html.document_fromstring(document))
 
         tokens = tokenize_html(html_document)
 
