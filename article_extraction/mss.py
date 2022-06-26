@@ -1,9 +1,11 @@
 import re
-from lxml import html
-from lxml.html.clean import Cleaner
 from urllib.request import urlopen
 
-from article_extraction.html import format_html_tokens, create_text
+from lxml import html
+from lxml.html.clean import Cleaner
+
+from article_extraction.html import create_text, format_html_tokens
+
 
 def tokenize_html(html_document):
     """Create a list that contains the tags and terms of the document."""
@@ -46,6 +48,7 @@ def tokenize_html(html_document):
 
     return tokens
 
+
 def find_maximum_subsequence(scores):
     """Find the subsequence with the highest score."""
     start = 0
@@ -57,7 +60,7 @@ def find_maximum_subsequence(scores):
         sm += scores[i]
 
         if sm > sum(maxSS):
-            maxSS = [scores[o] for o in range(start, i+1)]
+            maxSS = [scores[o] for o in range(start, i + 1)]
             pos = start
         if sm < 0:
             start = i + 1
@@ -65,13 +68,15 @@ def find_maximum_subsequence(scores):
 
     return pos, len(maxSS)
 
+
 def extract_maximum_subsequence(tokens, scores):
     """Return the term sequence with the highest score."""
     start, length = find_maximum_subsequence(scores)
 
-    terms = tokens[start:start+length]
+    terms = tokens[start : start + length]  # noqa: E203
 
     return terms
+
 
 class TermTypeScores(object):
     def __init__(self, word_score=1, tag_score=-4):
@@ -84,8 +89,10 @@ class TermTypeScores(object):
         else:
             return self.word_score
 
+
 class MSSArticleExtractor(object):
     """Extract the page article using the Maximum Subsequence algorithm."""
+
     def __init__(self, scoring=None):
         if not scoring:
             self.scoring = TermTypeScores()
@@ -94,8 +101,12 @@ class MSSArticleExtractor(object):
 
     def extract_article_from_url(self, url):
         """Extract the article from the page at the url."""
+        url = url.strip()
+        if not url.startswith("http://") and not url.startswith("https://"):
+            raise ValueError("only http and https schemes are allowed")
+
         filehandle = urlopen(url)
-        
+
         content = filehandle.read()
 
         content = content.decode("utf-8")
@@ -115,8 +126,9 @@ class MSSArticleExtractor(object):
 
         terms = format_html_tokens(terms)
 
-        terms = [re.sub(r"\n ", "\n", term, flags=re.UNICODE)
-                 for term in terms]
+        terms = [
+            re.sub(r"\n ", "\n", term, flags=re.UNICODE) for term in terms
+        ]
 
         contents = create_text(terms)
 

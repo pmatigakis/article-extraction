@@ -1,5 +1,5 @@
-from sys import argv
 import codecs
+from sys import argv
 
 from article_extraction.mss import MSSArticleExtractor
 
