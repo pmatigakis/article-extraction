@@ -1,10 +1,10 @@
 from unittest import TestCase, main
 
-from article_extraction.html import create_text, format_html_tokens
+from article_extraction.html import create_paragraphs, create_text
 
 
 class FormatHtmlTokensTests(TestCase):
-    def test_format_html_tokens(self):
+    def test_create_paragraphs(self):
         tokens = [
             "<p>",
             "this",
@@ -21,46 +21,24 @@ class FormatHtmlTokensTests(TestCase):
             "</h1>",
         ]
 
-        expected_result = [
-            "this",
-            "is",
-            "a",
-            "test",
-            "\n",
-            "\n",
-            "link",
-            "text",
-            "\n",
-            "header",
-            "\n",
-        ]
+        expected_result = ["this is a test link text", "header"]
 
-        result = format_html_tokens(tokens)
+        result = create_paragraphs(tokens)
 
         self.assertListEqual(result, expected_result)
 
     def test_create_text(self):
         tokens = [
-            "this",
-            "is",
-            "a",
-            "test",
-            "\n",
-            "\n",
-            "link",
-            "text",
-            "\n",
+            "this is a test",
+            "link text",
             "header",
-            "\n",
-            "\n",
         ]
 
         expected_result = """this is a test
 
 link text
-header
 
-"""
+header"""
         result = create_text(tokens)
 
         self.assertEqual(result, expected_result)

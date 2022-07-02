@@ -4,7 +4,7 @@ from urllib.request import urlopen
 from lxml import html
 from lxml.html.clean import Cleaner
 
-from article_extraction.html import create_text, format_html_tokens
+from article_extraction.html import create_paragraphs, create_text
 
 
 def tokenize_html(html_document):
@@ -79,7 +79,7 @@ def extract_maximum_subsequence(tokens, scores):
 
 
 class TermTypeScores(object):
-    def __init__(self, word_score=1, tag_score=-4):
+    def __init__(self, word_score=1.0, tag_score=-2.0):
         self.word_score = word_score
         self.tag_score = tag_score
 
@@ -106,9 +106,7 @@ class MSSArticleExtractor(object):
             raise ValueError("only http and https schemes are allowed")
 
         filehandle = urlopen(url)
-
         content = filehandle.read()
-
         content = content.decode("utf-8")
 
         return self.extract_article(content)
@@ -117,19 +115,13 @@ class MSSArticleExtractor(object):
         """Extract the article from the page contents."""
         cleaner = Cleaner(style=True)
         html_document = cleaner.clean_html(html.document_fromstring(document))
-
         tokens = tokenize_html(html_document)
-
         scores = [self.scoring.score(term) for term in tokens]
-
         terms = extract_maximum_subsequence(tokens, scores)
-
-        terms = format_html_tokens(terms)
-
+        terms = create_paragraphs(terms)
         terms = [
             re.sub(r"\n ", "\n", term, flags=re.UNICODE) for term in terms
         ]
-
         contents = create_text(terms)
 
         return contents

@@ -1,11 +1,12 @@
-def format_html_tokens(tokens):
+import textwrap
+
+
+def create_paragraphs(tokens):
+    paragraphs = []
     cleaned_tokens = []
 
     for term in tokens:
-        if term in ["</p>", "</div>"]:
-            cleaned_tokens.append("\n")
-            cleaned_tokens.append("\n")
-        elif term in [
+        if term in [
             "<h1>",
             "<h2>",
             "<h3>",
@@ -22,34 +23,29 @@ def format_html_tokens(tokens):
             "</ol>",
             "<li>",
             "</li>",
+            "<p>",
+            "</p>" "<div>",
+            "</div>",
         ]:
-            cleaned_tokens.append("\n")
+            if cleaned_tokens:
+                if cleaned_tokens[-1] == " ":
+                    cleaned_tokens = cleaned_tokens[:-1]
+                paragraphs.append("".join(cleaned_tokens))
+                cleaned_tokens = []
         elif not term.startswith("<") and not term.endswith(">"):
-            cleaned_tokens.append(term)
+            cleaned_tokens.extend([term, " "])
 
-    return cleaned_tokens
+    if cleaned_tokens:
+        if cleaned_tokens[-1] == " ":
+            cleaned_tokens = cleaned_tokens[:-1]
+        paragraphs.append("".join(cleaned_tokens))
+
+    return paragraphs
 
 
-def create_text(tokens):
-    lines = []
+def create_text(paragraphs):
+    paragraphs = [
+        textwrap.fill(paragraph, width=80) for paragraph in paragraphs
+    ]
 
-    line = []
-    for term in tokens:
-        if term == "\n":
-            if line:
-                lines.append(" ".join(line))
-                line = []
-            lines.append("\n")
-        else:
-            if len(" ".join(line)) < 70:
-                line.append(term)
-            else:
-                line.append(term)
-                lines.append(" ".join(line))
-                lines.append("\n")
-                line = []
-
-    if line:
-        lines.append(" ".join(line))
-
-    return "".join(lines)
+    return "\n\n".join(paragraphs)
