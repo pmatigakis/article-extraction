@@ -1,9 +1,11 @@
 from unittest import TestCase, main
 
-from article_extraction.html import create_paragraphs, create_text
+from lxml import html
+
+from article_extraction.html import create_paragraphs, tokenize_html
 
 
-class FormatHtmlTokensTests(TestCase):
+class CreateParagraphsTests(TestCase):
     def test_create_paragraphs(self):
         tokens = [
             "<p>",
@@ -27,21 +29,48 @@ class FormatHtmlTokensTests(TestCase):
 
         self.assertListEqual(result, expected_result)
 
-    def test_create_text(self):
-        tokens = [
-            "this is a test",
-            "link text",
+
+class TokenizeHtmlTests(TestCase):
+    def test_tokenize_html(self):
+        html_text = """
+<html>
+  <head>
+    <title>title text</title>
+  </head>
+  <body>
+    body text
+    <h1>a header</h1>
+    some more text
+  </body>
+</html>
+"""
+        html_document = html.document_fromstring(html_text)
+
+        tokens = tokenize_html(html_document)
+
+        expected_result = [
+            "<html>",
+            "<head>",
+            "<title>",
+            "title",
+            "text",
+            "</title>",
+            "</head>",
+            "<body>",
+            "body",
+            "text",
+            "<h1>",
+            "a",
             "header",
+            "</h1>",
+            "some",
+            "more",
+            "text",
+            "</body>",
+            "</html>",
         ]
 
-        expected_result = """this is a test
-
-link text
-
-header"""
-        result = create_text(tokens)
-
-        self.assertEqual(result, expected_result)
+        self.assertListEqual(tokens, expected_result)
 
 
 if __name__ == "__main__":
