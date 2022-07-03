@@ -1,4 +1,3 @@
-import re
 from urllib.request import urlopen
 
 from lxml import html
@@ -76,9 +75,6 @@ class MSSArticleExtractor(object):
         scores = [self.scoring.score(term) for term in tokens]
         terms = self._extract_maximum_subsequence(tokens, scores)
         terms = create_paragraphs(terms)
-        terms = [
-            re.sub(r"\n ", "\n", term, flags=re.UNICODE) for term in terms
-        ]
         contents = create_text(terms)
 
         return contents
