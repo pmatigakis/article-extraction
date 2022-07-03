@@ -1,3 +1,4 @@
+from typing import List, Optional, Tuple
 from urllib.request import urlopen
 
 from lxml import html
@@ -12,7 +13,7 @@ class TermTypeScores(object):
         self.word_score = word_score
         self.tag_score = tag_score
 
-    def score(self, term):
+    def score(self, term: str) -> float:
         if term.startswith("<") and term.endswith(">"):
             return self.tag_score
         else:
@@ -22,13 +23,15 @@ class TermTypeScores(object):
 class MSSArticleExtractor(object):
     """Extract the page article using the Maximum Subsequence algorithm."""
 
-    def __init__(self, scoring=None):
+    def __init__(self, scoring: Optional[TermTypeScores] = None):
         if not scoring:
             self.scoring = TermTypeScores()
         else:
             self.scoring = scoring
 
-    def _find_maximum_subsequence(self, scores):
+    def _find_maximum_subsequence(
+        self, scores: List[float]
+    ) -> Tuple[int, int]:
         """Find the subsequence with the highest score."""
         start = 0
         pos = 0
@@ -47,7 +50,9 @@ class MSSArticleExtractor(object):
 
         return pos, len(maxSS)
 
-    def _extract_maximum_subsequence(self, tokens, scores):
+    def _extract_maximum_subsequence(
+        self, tokens: List[str], scores: List[float]
+    ) -> List[str]:
         """Return the term sequence with the highest score."""
         start, length = self._find_maximum_subsequence(scores)
 
@@ -55,7 +60,7 @@ class MSSArticleExtractor(object):
 
         return terms
 
-    def extract_article_from_url(self, url):
+    def extract_article_from_url(self, url: str) -> str:
         """Extract the article from the page at the url."""
         url = url.strip()
         if not url.startswith("http://") and not url.startswith("https://"):
@@ -67,7 +72,7 @@ class MSSArticleExtractor(object):
 
         return self.extract_article(content)
 
-    def extract_article(self, document):
+    def extract_article(self, document: str) -> str:
         """Extract the article from the page contents."""
         cleaner = Cleaner(style=True)
         html_document = cleaner.clean_html(html.document_fromstring(document))

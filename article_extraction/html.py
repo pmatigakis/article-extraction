@@ -1,4 +1,7 @@
-def create_paragraphs(tokens):
+from typing import List
+
+
+def create_paragraphs(tokens: List[str]) -> List[str]:
     paragraphs = []
     cleaned_tokens = []
 
@@ -40,7 +43,7 @@ def create_paragraphs(tokens):
     return paragraphs
 
 
-def tokenize_html(html_document):
+def tokenize_html(html_document) -> List[str]:
     """Create a list that contains the tags and terms of the document."""
 
     def tokenize_html_recurcive(element, tokens=None):
