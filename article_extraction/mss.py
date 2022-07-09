@@ -1,14 +1,14 @@
 from typing import List, Optional, Tuple
-from urllib.request import urlopen
 
 from lxml import html
 from lxml.html.clean import Cleaner
 
+from article_extraction.extractors import ArticleExtractor
 from article_extraction.html import create_paragraphs, tokenize_html
 from article_extraction.text import create_text
 
 
-class TermTypeScores(object):
+class TermTypeScores:
     def __init__(self, word_score=1.0, tag_score=-2.0):
         self.word_score = word_score
         self.tag_score = tag_score
@@ -20,7 +20,7 @@ class TermTypeScores(object):
             return self.word_score
 
 
-class MSSArticleExtractor(object):
+class MSSArticleExtractor(ArticleExtractor):
     """Extract the page article using the Maximum Subsequence algorithm."""
 
     def __init__(self, scoring: Optional[TermTypeScores] = None):
@@ -60,20 +60,7 @@ class MSSArticleExtractor(object):
 
         return terms
 
-    def extract_article_from_url(self, url: str) -> str:
-        """Extract the article from the page at the url."""
-        url = url.strip()
-        if not url.startswith("http://") and not url.startswith("https://"):
-            raise ValueError("only http and https schemes are allowed")
-
-        filehandle = urlopen(url)
-        content = filehandle.read()
-        content = content.decode("utf-8")
-
-        return self.extract_article(content)
-
     def extract_article(self, document: str) -> str:
-        """Extract the article from the page contents."""
         cleaner = Cleaner(style=True)
         html_document = cleaner.clean_html(html.document_fromstring(document))
         tokens = tokenize_html(html_document)
