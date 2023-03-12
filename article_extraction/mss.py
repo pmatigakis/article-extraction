@@ -5,7 +5,6 @@ from lxml.html.clean import Cleaner
 
 from article_extraction.extractors import ArticleExtractor
 from article_extraction.html import create_paragraphs, tokenize_html
-from article_extraction.text import create_text
 
 
 class TermTypeScores:
@@ -66,7 +65,6 @@ class MSSArticleExtractor(ArticleExtractor):
         tokens = tokenize_html(html_document)
         scores = [self.scoring.score(term) for term in tokens]
         terms = self._extract_maximum_subsequence(tokens, scores)
-        terms = create_paragraphs(terms)
-        contents = create_text(terms)
+        paragraphs = create_paragraphs(terms)
 
-        return contents
+        return "\n\n".join(paragraphs)
