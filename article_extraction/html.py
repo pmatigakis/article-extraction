@@ -1,6 +1,27 @@
 from typing import List
 
 
+def _tokenize_html_recursive(element, tokens):
+    for child in element.getchildren():
+        if child.tag:
+            tokens.append("<" + child.tag + ">")
+
+        if child.text:
+            for term in child.text.strip().split():
+                tokens.append(term)
+
+        tokens = _tokenize_html_recursive(child, tokens)
+
+        if child.tag:
+            tokens.append("</" + child.tag + ">")
+
+        if child.tail:
+            for term in child.tail.strip().split():
+                tokens.append(term)
+
+    return tokens
+
+
 def create_paragraphs(tokens: List[str]) -> List[str]:
     paragraphs = []
     cleaned_tokens = []
@@ -45,29 +66,6 @@ def create_paragraphs(tokens: List[str]) -> List[str]:
 
 def tokenize_html(html_document) -> List[str]:
     """Create a list that contains the tags and terms of the document."""
-
-    def tokenize_html_recurcive(element, tokens=None):
-        tokens = tokens or []
-
-        for child in element.getchildren():
-            if child.tag:
-                tokens.append("<" + child.tag + ">")
-
-            if child.text:
-                for term in child.text.strip().split():
-                    tokens.append(term)
-
-            tokens = tokenize_html_recurcive(child, tokens)
-
-            if child.tag:
-                tokens.append("</" + child.tag + ">")
-
-            if child.tail:
-                for term in child.tail.strip().split():
-                    tokens.append(term)
-
-        return tokens
-
     tokens = []
 
     if html_document.tag:
@@ -77,7 +75,7 @@ def tokenize_html(html_document) -> List[str]:
         for term in html_document.text.strip().split():
             tokens.append(term)
 
-    tokens = tokenize_html_recurcive(html_document, tokens)
+    tokens = _tokenize_html_recursive(html_document, tokens)
 
     if html_document.tag:
         tokens.append("</" + html_document.tag + ">")
