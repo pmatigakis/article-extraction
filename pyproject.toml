@@ -20,7 +20,7 @@ classifiers=[
 
 [tool.poetry.dependencies]
 python = "^3.8"
-lxml = "^4.9.2"
+lxml = ">=4.7.1"
 
 [tool.poetry.dev-dependencies]
 pre-commit = "2.19.0"
