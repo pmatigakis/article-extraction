@@ -4,9 +4,10 @@ Article text extraction library.
 
 # Installation
 
-Checkout the source code and use pip to install the library.
+Checkout the source code and use poetry to install the library.
 
 ```bash
 git clone git@github.com:pmatigakis/article_extraction.git
-pip install .
+poetry shell
+poetry install
 ```
