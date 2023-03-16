@@ -1,22 +1,18 @@
 from os import path
-from unittest import TestCase, main
+from unittest import TestCase
 
-from article_extraction.mss import MSSArticleExtractor, TermTypeScores
-
-
-class TermTypeScoresTests(TestCase):
-    def test_scoring(self):
-        scoring = TermTypeScores(word_score=2, tag_score=-5)
-
-        self.assertEqual(scoring.score("<a>"), -5)
-        self.assertEqual(scoring.score("term"), 2)
+from article_extraction.mss.extractors import MSSArticleExtractor
 
 
 class MSSArticleExtractorTests(TestCase):
     def test_extract_article(self):
         with open(
             path.join(
-                path.dirname(__file__), "data", "pages", "simple-page.html"
+                path.dirname(__file__),
+                "..",
+                "data",
+                "pages",
+                "simple-page.html",
             )
         ) as f:
             document = f.read()
@@ -32,7 +28,3 @@ Lorem ipsum dolor sit amet, consectetur adipiscing elit. Vestibulum iaculis nequ
 
 Duis venenatis dignissim imperdiet. Pellentesque vel dui sed urna pretium porttitor a id mi. Lorem ipsum dolor sit amet, consectetur adipiscing elit. Donec non nunc mi. Duis et viverra tortor, efficitur rhoncus arcu. Integer a lacus vel turpis sagittis accumsan. Duis ornare pulvinar ultricies. Praesent accumsan faucibus vestibulum.""",  # noqa
         )
-
-
-if __name__ == "__main__":
-    main()

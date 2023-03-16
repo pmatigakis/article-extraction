@@ -1,4 +1,4 @@
-from unittest import TestCase, main
+from unittest import TestCase
 
 from lxml import html
 
@@ -71,7 +71,3 @@ class TokenizeHtmlTests(TestCase):
         ]
 
         self.assertListEqual(tokens, expected_result)
-
-
-if __name__ == "__main__":
-    main()

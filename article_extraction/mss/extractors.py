@@ -5,28 +5,14 @@ from lxml.html.clean import Cleaner
 
 from article_extraction.extractors import ArticleExtractor
 from article_extraction.html import create_paragraphs, tokenize_html
-
-
-class TermTypeScores:
-    def __init__(self, word_score=1.0, tag_score=-2.0):
-        self.word_score = word_score
-        self.tag_score = tag_score
-
-    def score(self, term: str) -> float:
-        if term.startswith("<") and term.endswith(">"):
-            return self.tag_score
-        else:
-            return self.word_score
+from article_extraction.mss.scores import TermTypeScores
 
 
 class MSSArticleExtractor(ArticleExtractor):
     """Extract the page article using the Maximum Subsequence algorithm."""
 
     def __init__(self, scoring: Optional[TermTypeScores] = None):
-        if not scoring:
-            self.scoring = TermTypeScores()
-        else:
-            self.scoring = scoring
+        self.scoring = scoring or TermTypeScores()
 
     def _find_maximum_subsequence(
         self, scores: List[float]

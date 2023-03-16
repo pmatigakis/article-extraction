@@ -1,15 +1,17 @@
 from argparse import ArgumentParser
+from urllib.request import urlopen
 
-from article_extraction.mss import MSSArticleExtractor
+from article_extraction.mss.extractors import MSSArticleExtractor
 
 parser = ArgumentParser()
 parser.add_argument("output")
 parser.add_argument("url")
 args = parser.parse_args()
 
-article_extractor = MSSArticleExtractor()
+document = urlopen(args.url).read()
 
-article = article_extractor.extract_article_from_url(args.url)
+article_extractor = MSSArticleExtractor()
+article = article_extractor.extract_article(document)
 
 with open(args.output, "w") as f:
     f.write(article)
