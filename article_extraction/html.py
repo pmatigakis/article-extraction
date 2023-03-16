@@ -23,6 +23,11 @@ def _tokenize_html_recursive(element, tokens):
 
 
 def create_paragraphs(tokens: List[str]) -> List[str]:
+    """Merge the document tokens into paragraphs
+
+    :param tokens: the list with the document tokens
+    :return: returns a list with the paragraphs
+    """
     paragraphs = []
     cleaned_tokens = []
 
@@ -65,7 +70,11 @@ def create_paragraphs(tokens: List[str]) -> List[str]:
 
 
 def tokenize_html(html_document) -> List[str]:
-    """Create a list that contains the tags and terms of the document."""
+    """Create a list that contains the tags and terms of the document.
+
+    :param html_document: the html document to tokenize
+    :returns: return a list with the document tokens
+    """
     tokens = _tokenize_html_recursive(html_document, [])
 
     return tokens
