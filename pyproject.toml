@@ -4,7 +4,7 @@ target-version = ['py38']
 
 [tool.poetry]
 name = "article-extraction"
-version = "0.2.0"
+version = "0.3.0"
 description = "Article text extraction library"
 authors = ["Matigakis Panagiotis <pmatigakis@gmail.com>"]
 license = "MIT"
