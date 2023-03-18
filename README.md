@@ -1,13 +1,27 @@
-Article text extraction library.
+# Article extraction library.
 
-<mark>Keep in mind that this library is still in early development.<mark>
+article-extraction is a package that can be used to extract the article content
+from an HTML page.
 
 # Installation
 
-Checkout the source code and use poetry to install the library.
+Use poetry to install the library from GitHub.
 
 ```bash
-git clone git@github.com:pmatigakis/article_extraction.git
-poetry shell
-poetry install
+poetry add "git+https://github.com/pmatigakis/article-extraction.git"
+```
+
+# Usage
+
+Extract the content of an article using article-extraction.
+
+```python
+from urllib.request import urlopen
+
+from articles.mss.extractors import MSSArticleExtractor
+
+document = urlopen("https://www.bbc.com/sport/formula1/64983451").read()
+article_extractor = MSSArticleExtractor()
+article = article_extractor.extract_article(document)
+print(article)
 ```

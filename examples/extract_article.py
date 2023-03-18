@@ -1,7 +1,7 @@
 from argparse import ArgumentParser
 from urllib.request import urlopen
 
-from article_extraction.mss.extractors import MSSArticleExtractor
+from articles.mss.extractors import MSSArticleExtractor
 
 parser = ArgumentParser()
 parser.add_argument("output")

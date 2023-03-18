@@ -1,7 +1,7 @@
 from os import path
 from unittest import TestCase
 
-from article_extraction.mss.extractors import MSSArticleExtractor
+from articles.mss.extractors import MSSArticleExtractor
 
 
 class MSSArticleExtractorTests(TestCase):

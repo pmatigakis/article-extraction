@@ -3,9 +3,9 @@ from typing import List, Optional, Tuple
 from lxml import html
 from lxml.html.clean import Cleaner
 
-from article_extraction.extractors import ArticleExtractor
-from article_extraction.html import create_paragraphs, tokenize_html
-from article_extraction.mss.scores import TermTypeScores
+from articles.extractors import ArticleExtractor
+from articles.html import create_paragraphs, tokenize_html
+from articles.mss.scores import TermTypeScores
 
 
 class MSSArticleExtractor(ArticleExtractor):
