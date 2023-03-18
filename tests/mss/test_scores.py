@@ -1,6 +1,6 @@
 from unittest import TestCase
 
-from article_extraction.mss.scores import TermTypeScores
+from articles.mss.scores import TermTypeScores
 
 
 class TermTypeScoresTests(TestCase):

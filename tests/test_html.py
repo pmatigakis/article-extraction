@@ -2,7 +2,7 @@ from unittest import TestCase
 
 from lxml import html
 
-from article_extraction.html import create_paragraphs, tokenize_html
+from articles.html import create_paragraphs, tokenize_html
 
 
 class CreateParagraphsTests(TestCase):

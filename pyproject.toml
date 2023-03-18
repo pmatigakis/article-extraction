@@ -3,17 +3,23 @@ line-length = 79
 target-version = ['py38']
 
 [tool.poetry]
-name = "article_extraction"
+name = "article-extraction"
 version = "0.2.0"
 description = "Article text extraction library"
 authors = ["Matigakis Panagiotis <pmatigakis@gmail.com>"]
 license = "MIT"
+readme = "README.md"
+homepage = "https://github.com/pmatigakis/article-extraction"
+repository = "https://github.com/pmatigakis/article-extraction"
+keywords = ["article extraction"]
+packages = [
+    {include = "articles"}
+]
 classifiers=[
     "Development Status :: 3 - Alpha",
     "Intended Audience :: Developers",
     "Natural Language :: English",
     "Programming Language :: Python :: 3",
-    "Programming Language :: Python :: Implementation :: CPython",
     "License :: OSI Approved :: MIT License",
     "Operating System :: OS Independent",
 ]
